@@ -1,0 +1,28 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang
+    steps:
+      - checkout
+      - run:
+          name: install mkr
+          command: |
+            cd /tmp
+            wget https://github.com/mackerelio/mkr/releases/download/v0.32.0/mkr_linux_amd64.tar.gz
+            tar -xvzf mkr_linux_amd64.tar.gz
+            sudo cp mkr_linux_amd64/mkr /usr/local/bin/mkr
+            sudo chmod 755 /usr/local/bin/mkr
+            cd -
+      - run: mkr h
+      # - run: git --version
+      # - run: ssh git@github.com || true
+      # - run: cat README.md
+      # - run: echo "- $(date)" >> README.md
+      # - run: cat README.md
+      # - run: |
+      #     git config --global user.email "you@example.com"
+      #     git config --global user.name "Your Name"
+      # - run: |
+      #     git commit -am '[ci skip] update from Circle CI!'
+      #     git push
