@@ -32,9 +32,9 @@ jobs:
       - run: git pull
       - run: mkr monitors pull
       - run:
-          - name: commit and push
-          - command: |
-              git config --global user.email "you@example.com"
-              git config --global user.name "Your Name"
-              git commit -am "[ci skip] CircleCIで更新"
-              git push
+          name: commit and push
+          command: |
+            git config --global user.email "you@example.com"
+            git config --global user.name "Your Name"
+            git commit -am "[ci skip] CircleCIで更新"
+            git push
