@@ -13,21 +13,24 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "...."
+            - $SSH_KEY_FINGERPRINT
 
       - checkout
 
-      - run:
-          name: install mkr
-          command: |
-            cd /tmp
-            wget https://github.com/mackerelio/mkr/releases/download/v0.32.0/mkr_linux_amd64.tar.gz
-            tar -xvzf mkr_linux_amd64.tar.gz
-            sudo cp mkr_linux_amd64/mkr /usr/local/bin/mkr
-            sudo chmod 755 /usr/local/bin/mkr
-            cd -
+      - run: ls ~/.ssh/
 
-      - run: mkr hosts
+      # - run:
+      #     name: install mkr
+      #     command: |
+      #       cd /tmp
+      #       wget https://github.com/mackerelio/mkr/releases/download/v0.32.0/mkr_linux_amd64.tar.gz
+      #       tar -xvzf mkr_linux_amd64.tar.gz
+      #       sudo cp mkr_linux_amd64/mkr /usr/local/bin/mkr
+      #       sudo chmod 755 /usr/local/bin/mkr
+      #       cd -
+
+      # - run: mkr hosts
+
       # - run: git --version
       # - run: ssh git@github.com || true
       # - run: cat README.md
