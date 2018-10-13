@@ -1,48 +1,40 @@
-# 環境変数
-#  * MACKEREL_APIKEY
-#    * https://mackerel.io/ja/docs/entry/advanced/cli
-#  * SSH_KEY_FINGERPRINT
-#    * https://mackerel.io/ja/docs/entry/advanced/cli
+# CircleCI Settings:
+#   Environment Variables:
+#     - MACKEREL_APIKEY:
+#       - https://mackerel.io/ja/docs/entry/advanced/cli
+#   SSH Permissions:
+#     - Hostname: github.com
+#       Private Key: <deploy key for this repo.>
 
 version: 2
 jobs:
   build:
     docker:
       - image: circleci/golang
-    environment:
     steps:
+      # https://circleci.com/docs/2.0/gh-bb-integration/#deployment-keys-and-user-keys
       - add_ssh_keys:
           fingerprints:
             - db:de:93:0e:da:98:1b:d7:bc:ad:ce:71:dd:a2:45:14
 
       - checkout
 
-      - run: ls ~/.ssh/
+      - run:
+          name: install mkr
+          command: |
+            cd /tmp
+            wget https://github.com/mackerelio/mkr/releases/download/v0.32.0/mkr_linux_amd64.tar.gz
+            tar -xvzf mkr_linux_amd64.tar.gz
+            sudo cp mkr_linux_amd64/mkr /usr/local/bin/mkr
+            sudo chmod 755 /usr/local/bin/mkr
+            cd -
 
-      - run: echo $SSH_KEY_FINGERPRINT
-      # - run:
-      #     name: install mkr
-      #     command: |
-      #       cd /tmp
-      #       wget https://github.com/mackerelio/mkr/releases/download/v0.32.0/mkr_linux_amd64.tar.gz
-      #       tar -xvzf mkr_linux_amd64.tar.gz
-      #       sudo cp mkr_linux_amd64/mkr /usr/local/bin/mkr
-      #       sudo chmod 755 /usr/local/bin/mkr
-      #       cd -
-
-      # - run: mkr hosts
-
-      # - run: git --version
-
-      - run: ssh git@github.com || true
-      - run: git push
-
-      # - run: cat README.md
-      # - run: echo "- $(date)" >> README.md
-      # - run: cat README.md
-      # - run: |
-      #     git config --global user.email "you@example.com"
-      #     git config --global user.name "Your Name"
-      # - run: |
-      #     git commit -am '[ci skip] update from Circle CI!'
-      #     git push
+      - run: git pull
+      - run: mkr monitors pull
+      - run:
+          - name: commit and push
+          - command: |
+              git config --global user.email "you@example.com"
+              git config --global user.name "Your Name"
+              git commit -am "[ci skip] CircleCIで更新"
+              git push
