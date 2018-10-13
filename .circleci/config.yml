@@ -33,7 +33,10 @@ jobs:
       # - run: mkr hosts
 
       # - run: git --version
+
       - run: ssh git@github.com || true
+      - run: git fetch
+
       # - run: cat README.md
       # - run: echo "- $(date)" >> README.md
       # - run: cat README.md
