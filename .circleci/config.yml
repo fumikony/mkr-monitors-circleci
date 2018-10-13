@@ -13,7 +13,7 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - $SSH_KEY_FINGERPRINT
+            - db:de:93:0e:da:98:1b:d7:bc:ad:ce:71:dd:a2:45:14
 
       - checkout
 
