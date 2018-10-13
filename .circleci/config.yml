@@ -1,13 +1,22 @@
+# 環境変数
+#  * MACKEREL_APIKEY
+#    * https://mackerel.io/ja/docs/entry/advanced/cli
+#  * SSH_KEY_FINGERPRINT
+#    * https://mackerel.io/ja/docs/entry/advanced/cli
+
 version: 2
 jobs:
   build:
     docker:
       - image: circleci/golang
     environment:
-      # https://mackerel.io/ja/docs/entry/advanced/cli
-      # - MACKEREL_APIKEY: ''
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "...."
+
       - checkout
+
       - run:
           name: install mkr
           command: |
@@ -17,6 +26,7 @@ jobs:
             sudo cp mkr_linux_amd64/mkr /usr/local/bin/mkr
             sudo chmod 755 /usr/local/bin/mkr
             cd -
+
       - run: mkr hosts
       # - run: git --version
       # - run: ssh git@github.com || true
