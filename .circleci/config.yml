@@ -10,7 +10,6 @@ jobs:
     docker:
       - image: circleci/golang
     environment:
-      - SSH_KEY_FINGERPRINT: foo
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -34,7 +33,7 @@ jobs:
       # - run: mkr hosts
 
       # - run: git --version
-      # - run: ssh git@github.com || true
+      - run: ssh git@github.com || true
       # - run: cat README.md
       # - run: echo "- $(date)" >> README.md
       # - run: cat README.md
